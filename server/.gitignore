@@ -1,0 +1,9 @@
+*.user
+**/[Bb]in/
+**/[Oo]bj/
+**/[Oo]ut/
+**/.vs/
+**/node_modules
+**/wwwroot
+/Security/oidc-server.txt
+/EmployeeApi/api.txt

@@ -1,0 +1,37 @@
+<mat-toolbar>
+  <button (click)="drawer.toggle()" mat-icon-button class="example-icon"
+          aria-label="Example icon-button with menu icon">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>My App</span>
+
+  <span class="example-spacer"></span>
+
+  <button
+    [matMenuTriggerFor]="menu"
+    mat-icon-button
+    class="example-icon favorite-icon"
+    aria-label="Example icon-button with heart icon"
+  >
+    <mat-icon>account_circle</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <ng-container *ngIf="isAuthenticated else unauthenticatedTemplate">
+      <button mat-menu-item (click)="logoffAndRevokeTokens()">Logout</button>
+    </ng-container>
+
+    <ng-template #unauthenticatedTemplate>
+      <button mat-menu-item (click)="login()">Login</button>
+    </ng-template>
+  </mat-menu>
+</mat-toolbar>
+
+<mat-drawer-container class="example-container" autosize>
+  <mat-drawer #drawer class="example-sidenav" mode="side">
+    <p>Auto-resizing sidenav</p>
+  </mat-drawer>
+
+  <div class="example-sidenav-content">
+    <router-outlet></router-outlet>
+  </div>
+</mat-drawer-container>
