@@ -1,14 +1,11 @@
-import { Routes, RouterModule } from '@angular/router';
-
-import { ForbiddenComponent } from './forbidden/forbidden.component';
-import { HomeComponent } from './home/home.component';
-import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
+import { RouterModule, Routes } from '@angular/router';
+import { HomeComponent } from './pages/home/home.component';
+import { AutoLoginAllRoutesGuard } from "angular-auth-oidc-client";
 
 const appRoutes: Routes = [
-    { path: '', component: HomeComponent },
-    { path: 'home', component: HomeComponent },
-    { path: 'forbidden', component: ForbiddenComponent },
-    { path: 'unauthorized', component: UnauthorizedComponent }
+  { path: '', component: HomeComponent },
+  { path: 'home', component: HomeComponent, canActivate: [AutoLoginAllRoutesGuard] },
+  { path: 'people', loadChildren: () => import('./pages/people/people.module').then(m => m.PeopleModule), canLoad: [AutoLoginAllRoutesGuard] }
 ];
 
 export const routing = RouterModule.forRoot(appRoutes, { relativeLinkResolution: 'legacy' });

@@ -11,6 +11,11 @@
       "schematics": {
         "@schematics/angular:application": {
           "strict": true
+        },
+        "@schematics/angular:component": {
+          "changeDetection": "OnPush",
+          "style": "scss",
+          "skipTests": true
         }
       },
       "root": "",

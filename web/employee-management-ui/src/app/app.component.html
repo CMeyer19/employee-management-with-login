@@ -1,8 +1,13 @@
 <mat-toolbar>
-  <button (click)="drawer.toggle()" mat-icon-button class="example-icon"
-          aria-label="Example icon-button with menu icon">
+  <button
+    (click)="drawer.toggle()"
+    mat-icon-button
+    class="example-icon"
+    aria-label="Example icon-button with menu icon"
+  >
     <mat-icon>menu</mat-icon>
   </button>
+
   <span>My App</span>
 
   <span class="example-spacer"></span>
@@ -15,20 +20,47 @@
   >
     <mat-icon>account_circle</mat-icon>
   </button>
+
   <mat-menu #menu="matMenu">
     <ng-container *ngIf="isAuthenticated else unauthenticatedTemplate">
-      <button mat-menu-item (click)="logoffAndRevokeTokens()">Logout</button>
+      <button
+        (click)="logout()"
+        mat-menu-item
+      >
+        Logout
+      </button>
     </ng-container>
 
     <ng-template #unauthenticatedTemplate>
-      <button mat-menu-item (click)="login()">Login</button>
+      <button
+        (click)="login()"
+        mat-menu-item
+      >
+        Login
+      </button>
     </ng-template>
   </mat-menu>
 </mat-toolbar>
 
-<mat-drawer-container class="example-container" autosize>
+<mat-drawer-container class="example-container">
   <mat-drawer #drawer class="example-sidenav" mode="side">
-    <p>Auto-resizing sidenav</p>
+    <mat-list>
+      <mat-list-item
+        *ngFor="let route of routes"
+        [routerLink]="route.route"
+        [routerLinkActiveOptions]="{exact: route.exact}"
+        routerLinkActive="active"
+        class="route"
+      >
+        <mat-icon mat-list-icon>{{route.icon}}</mat-icon>
+
+        <div mat-line>{{route.displayValue}}</div>
+
+        <mat-chip-list aria-label="Event counter">
+          <mat-chip>2</mat-chip>
+        </mat-chip-list>
+      </mat-list-item>
+    </mat-list>
   </mat-drawer>
 
   <div class="example-sidenav-content">
