@@ -97,8 +97,7 @@ public class Startup
                 {
                     builder
                         .AllowCredentials()
-                        .WithOrigins(
-                            "https://localhost:4200")
+                        .WithOrigins("https://localhost:4200")
                         .SetIsOriginAllowedToAllowWildcardSubdomains()
                         .AllowAnyHeader()
                         .AllowAnyMethod();
@@ -168,8 +167,8 @@ public class Startup
                        .AllowHybridFlow()
                        .AllowRefreshTokenFlow();
 
-                // Mark the "email", "profile", "roles" and "dataEventRecords" scopes as supported scopes.
-                options.RegisterScopes(Scopes.Email, Scopes.Profile, Scopes.Roles, "dataEventRecords");
+                // Mark the "email", "profile", "roles" and "people" scopes as supported scopes.
+                options.RegisterScopes(Scopes.Email, Scopes.Profile, Scopes.Roles, "people");
 
                 // Register the signing and encryption credentials.
                 options.AddDevelopmentEncryptionCertificate()

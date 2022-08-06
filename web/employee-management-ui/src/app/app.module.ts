@@ -28,7 +28,7 @@ import { MatMenuModule } from "@angular/material/menu";
         redirectUrl: window.location.origin,
         postLogoutRedirectUri: window.location.origin,
         clientId: 'angularclient',
-        scope: 'openid profile email dataEventRecords offline_access',
+        scope: 'openid profile email people offline_access',
         responseType: 'code',
         silentRenew: true,
         renewTimeBeforeTokenExpiresInSeconds: 10,

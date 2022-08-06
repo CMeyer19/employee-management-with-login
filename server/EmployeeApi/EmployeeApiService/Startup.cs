@@ -24,9 +24,7 @@ public class Startup
     {
         var connection = Configuration.GetConnectionString("DefaultConnection");
 
-        services.AddDbContext<PersonContext>(options =>
-            options.UseSqlite(connection)
-        );
+        services.AddDbContext<PersonContext>();
 
         services.AddCors(options =>
         {

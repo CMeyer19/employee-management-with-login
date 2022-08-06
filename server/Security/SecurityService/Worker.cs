@@ -63,7 +63,7 @@ namespace OpeniddictServer
                             Permissions.Scopes.Email,
                             Permissions.Scopes.Profile,
                             Permissions.Scopes.Roles,
-                            Permissions.Prefixes.Scope + "dataEventRecords"
+                            Permissions.Prefixes.Scope + "people"
                         },
                         Requirements =
                         {
@@ -73,12 +73,12 @@ namespace OpeniddictServer
                 }
 
                 // API
-                if (await manager.FindByClientIdAsync("rs_dataEventRecordsApi") == null)
+                if (await manager.FindByClientIdAsync("rs_peopleApi") == null)
                 {
                     var descriptor = new OpenIddictApplicationDescriptor
                     {
-                        ClientId = "rs_dataEventRecordsApi",
-                        ClientSecret = "dataEventRecordsSecret",
+                        ClientId = "rs_peopleApi",
+                        ClientSecret = "peopleSecret",
                         Permissions =
                         {
                             Permissions.Endpoints.Introspection
@@ -87,69 +87,25 @@ namespace OpeniddictServer
 
                     await manager.CreateAsync(descriptor);
                 }
-
-                // Blazor Hosted
-                if (await manager.FindByClientIdAsync("blazorcodeflowpkceclient") is null)
-                {
-                    await manager.CreateAsync(new OpenIddictApplicationDescriptor
-                    {
-                        ClientId = "blazorcodeflowpkceclient",
-                        ConsentType = ConsentTypes.Explicit,
-                        DisplayName = "Blazor code PKCE",
-                        DisplayNames =
-                        {
-                            [CultureInfo.GetCultureInfo("fr-FR")] = "Application cliente MVC"
-                        },
-                        PostLogoutRedirectUris =
-                        {
-                            new Uri("https://localhost:44348/signout-callback-oidc"),
-                            new Uri("https://localhost:5001/signout-callback-oidc")
-                        },
-                        RedirectUris =
-                        {
-                            new Uri("https://localhost:44348/signin-oidc"),
-                            new Uri("https://localhost:5001/signin-oidc")
-                        },
-                        ClientSecret = "codeflow_pkce_client_secret",
-                        Permissions =
-                        {
-                            Permissions.Endpoints.Authorization,
-                            Permissions.Endpoints.Logout,
-                            Permissions.Endpoints.Token,
-                            Permissions.Endpoints.Revocation,
-                            Permissions.GrantTypes.AuthorizationCode,
-                            Permissions.GrantTypes.RefreshToken,
-                            Permissions.ResponseTypes.Code,
-                            Permissions.Scopes.Email,
-                            Permissions.Scopes.Profile,
-                            Permissions.Scopes.Roles,
-                            Permissions.Prefixes.Scope + "dataEventRecords"
-                        },
-                        Requirements =
-                        {
-                            Requirements.Features.ProofKeyForCodeExchange
-                        }
-                    });
-                }
             }
 
             static async Task RegisterScopesAsync(IServiceProvider provider)
             {
                 var manager = provider.GetRequiredService<IOpenIddictScopeManager>();
 
-                if (await manager.FindByNameAsync("dataEventRecords") is null)
+                if (await manager.FindByNameAsync("people") is null)
                 {
                     await manager.CreateAsync(new OpenIddictScopeDescriptor
                     {
-                        DisplayName = "dataEventRecords API access",
+                        DisplayName = "people API access",
                         DisplayNames =
                         {
                             [CultureInfo.GetCultureInfo("fr-FR")] = "Accès à l'API de démo"
                         },
-                        Name = "dataEventRecords",
+                        Name = "people",
                         Resources =
                         {
-                            "rs_dataEventRecordsApi"
+                            "rs_peopleApi"
                         }
                     });
                 }
