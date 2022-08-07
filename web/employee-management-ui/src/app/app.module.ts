@@ -14,6 +14,8 @@ import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatMenuModule } from "@angular/material/menu";
 import { MatListModule } from "@angular/material/list";
 import { MatChipsModule } from "@angular/material/chips";
+import { ConfirmationDialogComponent } from './dialogs/confirmation-dialog/confirmation-dialog.component';
+import { MatDialogModule } from "@angular/material/dialog";
 
 @NgModule({
   imports: [
@@ -43,10 +45,12 @@ import { MatChipsModule } from "@angular/material/chips";
     MatMenuModule,
     MatListModule,
     MatChipsModule,
+    MatDialogModule,
   ],
   declarations: [
     AppComponent,
-    HomeComponent
+    HomeComponent,
+    ConfirmationDialogComponent
   ],
   bootstrap: [AppComponent],
 })

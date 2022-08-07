@@ -5,9 +5,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using System;
 using Microsoft.OpenApi.Models;
 using OpenIddict.Validation.AspNetCore;
+using MassTransit;
 
 namespace ResourceServer;
 
@@ -73,6 +73,13 @@ public class Startup
             });
 
         services.AddScoped<IAuthorizationHandler, RequireScopeHandler>();
+
+        services.AddMassTransit(x =>
+        {
+            x.SetKebabCaseEndpointNameFormatter();
+
+            x.UsingRabbitMq((context, cfg) => cfg.ConfigureEndpoints(context));
+        });
 
         services.AddAuthorization(options =>
         {

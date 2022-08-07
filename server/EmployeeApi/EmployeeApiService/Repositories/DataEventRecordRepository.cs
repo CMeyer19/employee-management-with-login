@@ -4,6 +4,9 @@ using System.Linq;
 using ResourceServer.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using MassTransit;
+using System.Threading.Tasks;
+using SharedAbstractions;
 
 namespace ResourceServer.Repositories;
 
@@ -11,14 +14,17 @@ public class PeopleRepository
 {
     private readonly PersonContext _context;
     private readonly ILogger _logger;
+    private readonly IPublishEndpoint _publishEndpoint;
 
     public PeopleRepository(
         PersonContext context,
-        ILoggerFactory loggerFactory
+        ILoggerFactory loggerFactory,
+       IPublishEndpoint publishEndpoint
     )
     {
         _context = context;
         _logger = loggerFactory.CreateLogger("PeopleResporitory");
+        _publishEndpoint = publishEndpoint;
     }
 
     public List<Person> GetAll()
@@ -35,10 +41,14 @@ public class PeopleRepository
         return person;
     }
 
-    public void Post(Person person)
+    public async Task<Guid> Post(Person person)
     {
         _context.People.Add(person);
         _context.SaveChanges();
+
+        await _publishEndpoint.Publish(new SignalRMessage { Event = "UserAdded" });
+
+        return person.Id;
     }
 
     public void Put(Guid id, [FromBody] Person person)

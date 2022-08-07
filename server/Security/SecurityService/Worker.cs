@@ -1,9 +1,4 @@
-﻿using System;
-using System.Globalization;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+﻿using System.Globalization;
 using OpenIddict.Abstractions;
 using OpeniddictServer.Data;
 using static OpenIddict.Abstractions.OpenIddictConstants;

@@ -3,6 +3,7 @@ using ResourceServer.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Threading.Tasks;
 
 namespace ResourceServer.Controllers;
 
@@ -30,13 +31,14 @@ public class PeopleController : Controller
     }
 
     [HttpPost]
-    public void Post([FromBody]Person value)
+    public async Task<IActionResult> PostAsync([FromBody] Person value)
     {
-        _peopleRepository.Post(value);
+        var result = await _peopleRepository.Post(value);
+        return Ok(result);
     }
 
     [HttpPut("{id}")]
-    public void Put(Guid id, [FromBody]Person value)
+    public void Put(Guid id, [FromBody] Person value)
     {
         _peopleRepository.Put(id, value);
     }

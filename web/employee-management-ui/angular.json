@@ -16,6 +16,9 @@
           "changeDetection": "OnPush",
           "style": "scss",
           "skipTests": true
+        },
+        "@schematics/angular:service": {
+          "skipTests": true
         }
       },
       "root": "",

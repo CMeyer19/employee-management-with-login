@@ -4,7 +4,8 @@ import { PersonInterface } from "../../abstractions/models/person.model";
 import { MatDialog } from "@angular/material/dialog";
 import { AddPersonComponent } from "./dialogs/add-person/add-person.component";
 import { PersonApiService } from "../../services/person-api.service";
-import { map, of, switchMap } from "rxjs";
+import { EMPTY, map, of, switchMap, take } from "rxjs";
+import { ConfirmationDialogComponent } from "../../dialogs/confirmation-dialog/confirmation-dialog.component";
 
 @Component({
   selector: 'app-people',
@@ -38,14 +39,19 @@ export class PeopleComponent implements OnInit {
     );
 
     dialogRef.afterClosed().pipe(
-      switchMap((newPerson: Omit<PersonInterface, 'id'>) => this._personApiService.add(newPerson).pipe(switchMap(newPersonId => of({
-        ...newPerson,
-        id: newPersonId
-      }))))
+      switchMap((newPerson: Omit<PersonInterface, 'id'>) => !!newPerson
+        ? this._personApiService.add(newPerson).pipe(
+          switchMap(newPersonId => of({
+            ...newPerson,
+            id: newPersonId
+          }))
+        )
+        : EMPTY
+      )
     ).subscribe(newPerson => this.dataSource = this.dataSource.concat(newPerson));
   }
 
-  public editPerson(person: PersonInterface): void {
+  public editPerson(event: any, person: PersonInterface): void {
     const dialogRef = this._dialog.open(
       AddPersonComponent,
       {
@@ -55,7 +61,10 @@ export class PeopleComponent implements OnInit {
     );
 
     dialogRef.afterClosed().pipe(
-      switchMap((updatedPerson: PersonInterface) => this._personApiService.update(person.id, updatedPerson).pipe(map(() => updatedPerson)))
+      switchMap((updatedPerson: PersonInterface) => !!updatedPerson
+        ? this._personApiService.update(person.id, updatedPerson).pipe(map(() => updatedPerson))
+        : EMPTY
+      )
     ).subscribe(updatedPerson => {
       const array: Array<PersonInterface> = [...this.dataSource];
       const index: number = array.findIndex(x => x.id === person.id);
@@ -67,8 +76,25 @@ export class PeopleComponent implements OnInit {
   }
 
   public deletePerson(id: string): void {
-    this._personApiService.delete(id).subscribe(() => {
-      this.dataSource = this.dataSource.filter(x => x.id !== id);
+    const dialogRef = this._dialog.open(
+      ConfirmationDialogComponent,
+      {
+        width: '250px',
+        data: {
+          title: 'Delete user',
+          message: 'Are you sure you want to delete this user',
+          resolveText: 'Confirm',
+          rejectText: 'Cancel'
+        }
+      },
+    );
+
+    dialogRef.afterClosed().pipe(take(1)).subscribe(confirmed => {
+      if (!confirmed) return;
+
+      this._personApiService.delete(id).subscribe(() => {
+        this.dataSource = this.dataSource.filter(x => x.id !== id);
+      });
     });
   }
 

@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>{{title}}</h1>
+
+<div mat-dialog-content>
+  <p>{{message}}</p>
+</div>
+
+<div class="flex justify-between" mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="false">{{rejectText}}</button>
+
+  <button mat-flat-button color="primary" [mat-dialog-close]="true" cdkFocusInitial>{{resolveText}}</button>
+</div>
