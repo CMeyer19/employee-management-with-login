@@ -1,23 +1,15 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Quartz;
 using OpeniddictServer.Data;
 using static OpenIddict.Abstractions.OpenIddictConstants;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Logging;
 using Fido2Identity;
 using Fido2NetLib;
-using MassTransit;
-using SecurityService.RabbitMQ;
 
 namespace OpeniddictServer;
 
@@ -194,25 +186,6 @@ public class Startup
                 // Register the ASP.NET Core host.
                 options.UseAspNetCore();
             });
-
-        services.AddMassTransit(x =>
-        {
-            x.AddConsumer<MessageEventConsumer>().Endpoint(asd => asd.Name = "message-event");
-
-            x.SetKebabCaseEndpointNameFormatter();
-
-            x.UsingRabbitMq((context, cfg) =>
-            {
-                //cfg.Message<MessageEvent>(a => a.SetEntityName("message-event"));
-
-                cfg.Host("localhost", "/", h => {
-                    h.Username("guest");
-                    h.Password("guest");
-                });
-
-                cfg.ConfigureEndpoints(context);
-            });
-        });
 
         // Register the worker responsible of seeding the database.
         // Note: in a real world application, this step should be part of a setup script.

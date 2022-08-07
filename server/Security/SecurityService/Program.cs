@@ -1,5 +1,3 @@
-using MassTransit;
-using SecurityService.RabbitMQ;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
@@ -16,22 +14,6 @@ public class Program
             .Enrich.FromLogContext()
             .WriteTo.Console()
             .CreateLogger();
-
-        var bus = Bus.Factory.CreateUsingRabbitMq(cfg =>
-        {
-            cfg.Host("localhost", "/", h => {
-                h.Username("guest");
-                h.Password("guest");
-            });
-            cfg.ReceiveEndpoint("message-event", ep =>
-            {
-                ep.PrefetchCount = 16;
-                ep.UseMessageRetry(r => r.Interval(2, 100));
-                ep.Consumer<MessageEventConsumer>();
-            });
-
-        });
-        bus.StartAsync();
 
         try
         {
