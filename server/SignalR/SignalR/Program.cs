@@ -1,5 +1,6 @@
 using MassTransit;
 using SignalR.RabbitMQ;
+using SignalR.SignalR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +23,20 @@ builder.Services.AddMassTransit(x =>
 
     x.UsingRabbitMq((context, cfg) => cfg.ConfigureEndpoints(context));
 });
+builder.Services.AddSignalR();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins",
+        builder =>
+        {
+            builder
+                .AllowCredentials()
+                .WithOrigins("https://localhost:4200")
+                .SetIsOriginAllowedToAllowWildcardSubdomains()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
 
 var app = builder.Build();
 
@@ -33,9 +48,12 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors("AllowAllOrigins");
 
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<ChatHub>("/chatHub");
 
 app.Run();

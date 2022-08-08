@@ -6,6 +6,7 @@ export const environment = {
   production: false,
   routes: {
     api: 'https://localhost:44390',
-    auth: 'https://localhost:44395'
+    auth: 'https://localhost:44395',
+    signalR: 'https://localhost:7003'
   }
 };

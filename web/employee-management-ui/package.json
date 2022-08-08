@@ -21,6 +21,7 @@
     "@angular/platform-browser-dynamic": "^14.1.0",
     "@angular/router": "^14.1.0",
     "@microsoft/signalr": "^6.0.7",
+    "@types/signalr": "^2.2.37",
     "angular-auth-oidc-client": "^14.1.1",
     "rxjs": "~7.5.6",
     "tslib": "^2.4.0",

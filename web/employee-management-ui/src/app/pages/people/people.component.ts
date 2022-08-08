@@ -6,6 +6,7 @@ import { AddPersonComponent } from "./dialogs/add-person/add-person.component";
 import { PersonApiService } from "../../services/person-api.service";
 import { EMPTY, map, of, switchMap, take } from "rxjs";
 import { ConfirmationDialogComponent } from "../../dialogs/confirmation-dialog/confirmation-dialog.component";
+import { SignalRService } from "../../services/signal-r.service";
 
 @Component({
   selector: 'app-people',
@@ -28,7 +29,8 @@ export class PeopleComponent implements OnInit {
 
   constructor(
     private _dialog: MatDialog,
-    private _personApiService: PersonApiService
+    private _personApiService: PersonApiService,
+    private _signalRService: SignalRService
   ) {
   }
 
@@ -99,6 +101,9 @@ export class PeopleComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    this._signalRService.startConnection();
+    this._signalRService.addTransferChartDataListener();
+
     this._personApiService.getAll().subscribe(result => {
       this.dataSource = result;
     });
