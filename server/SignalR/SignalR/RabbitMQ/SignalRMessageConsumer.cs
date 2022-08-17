@@ -1,20 +1,28 @@
 ﻿using MassTransit;
+using Microsoft.AspNetCore.SignalR;
 using SharedAbstractions;
+using SignalR.SignalR;
 
 namespace SignalR.RabbitMQ
 {
     public class SignalRMessageConsumer : IConsumer<SignalRMessage>
     {
-        readonly ILogger<SignalRMessageConsumer> _logger;
+        private readonly ILogger<SignalRMessageConsumer> _logger;
+        private readonly IHubContext<MessageHub> _hubContext;
 
-        public SignalRMessageConsumer(ILogger<SignalRMessageConsumer> logger)
+        public SignalRMessageConsumer(
+            ILogger<SignalRMessageConsumer> logger,
+            IHubContext<MessageHub> hubContext
+        )
         {
             _logger = logger;
+            _hubContext = hubContext;
         }
 
         public async Task Consume(ConsumeContext<SignalRMessage> context)
         {
-            _logger.LogInformation("Event Fired: {Value}", context.Message.Event);
+            _logger.LogInformation("RabbitMQ message recieved, triggering signalR message: {Value}", context.Message.Event);
+            await _hubContext.Clients.All.SendAsync("ReceiveMessage", context.Message.Event);
         }
     }
 

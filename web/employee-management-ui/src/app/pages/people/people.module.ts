@@ -11,6 +11,10 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { FormsModule } from "@angular/forms";
 import { PeopleFacade } from "./state/people.facade";
+import { EffectsModule } from "@ngrx/effects";
+import { PeopleEffects, reducer } from "./state";
+import { StoreModule } from "@ngrx/store";
+import { FEATURE_NAME } from "./people.constants";
 
 @NgModule({
   declarations: [
@@ -26,7 +30,9 @@ import { PeopleFacade } from "./state/people.facade";
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
-    FormsModule
+    FormsModule,
+    StoreModule.forFeature(FEATURE_NAME, reducer),
+    EffectsModule.forFeature([PeopleEffects]),
   ],
   providers: [PeopleFacade]
 })

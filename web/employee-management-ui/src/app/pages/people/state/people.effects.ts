@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, Effect, ofType } from '@ngrx/effects';
-import { catchError, EMPTY } from 'rxjs';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { catchError, EMPTY, tap } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
 import { PersonApiService } from "../../../services/person-api.service";
 import { getPeople, getPeopleSuccess } from "./people.actions";

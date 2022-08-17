@@ -17,6 +17,9 @@ import { MatChipsModule } from "@angular/material/chips";
 import { ConfirmationDialogComponent } from './dialogs/confirmation-dialog/confirmation-dialog.component';
 import { MatDialogModule } from "@angular/material/dialog";
 import { StoreModule } from '@ngrx/store';
+import { reducer } from "./pages/people/state/people.reducer";
+import { FEATURE_NAME } from "./pages/people/people.constants";
+import { EffectsModule } from "@ngrx/effects";
 
 @NgModule({
   imports: [
@@ -47,7 +50,8 @@ import { StoreModule } from '@ngrx/store';
     MatListModule,
     MatChipsModule,
     MatDialogModule,
-    StoreModule.forRoot({}, {}),
+    StoreModule.forRoot({}),
+    EffectsModule.forRoot([]),
   ],
   declarations: [
     AppComponent,

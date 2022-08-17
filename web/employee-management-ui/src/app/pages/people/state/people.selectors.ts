@@ -1,17 +1,20 @@
 import { createFeatureSelector, createSelector } from "@ngrx/store";
 import { adapter, PeopleState } from "./people.reducer";
 import { FEATURE_NAME } from "../people.constants";
-import { PersonInterface } from "../../../abstractions/models/person.model";
 
 export const { selectAll } = adapter.getSelectors();
 
-export const selectPeopleState = createFeatureSelector<PeopleState>(FEATURE_NAME);
+// feature selector
+export const selectPeopleState = createFeatureSelector<PeopleState>(
+  FEATURE_NAME
+);
 
-export const selectAllPeople = createSelector(
+// child selectors
+export const selectPeople = createSelector(
   selectPeopleState,
-  peopleState => {
-    debugger;
-    const one: Array<PersonInterface> = (Object.values(peopleState?.entities) || []).filter(x => x !== undefined) as Array<PersonInterface> || [];
-    return one;
-  }
+  state => selectAll(state)
+);
+export const selectLoading = createSelector(
+  selectPeopleState,
+  state => state.loading
 );
