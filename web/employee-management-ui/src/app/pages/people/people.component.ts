@@ -4,9 +4,10 @@ import { PersonInterface } from "../../abstractions/models/person.model";
 import { MatDialog } from "@angular/material/dialog";
 import { AddPersonComponent } from "./dialogs/add-person/add-person.component";
 import { PersonApiService } from "../../services/person-api.service";
-import { EMPTY, map, of, switchMap, take } from "rxjs";
+import { EMPTY, map, Observable, of, switchMap, take } from "rxjs";
 import { ConfirmationDialogComponent } from "../../dialogs/confirmation-dialog/confirmation-dialog.component";
 import { SignalRService } from "../../services/signal-r.service";
+import { PeopleFacade } from "./state/people.facade";
 
 @Component({
   selector: 'app-people',
@@ -25,11 +26,13 @@ export class PeopleComponent implements OnInit {
       value: 'Last Name'
     }
   ];
+
   public dataSource: Array<PersonInterface> = [];
 
   constructor(
     private _dialog: MatDialog,
     private _personApiService: PersonApiService,
+    private _peopleFacade: PeopleFacade,
     private _signalRService: SignalRService
   ) {
   }
@@ -104,8 +107,6 @@ export class PeopleComponent implements OnInit {
     this._signalRService.startConnection();
     this._signalRService.addTransferChartDataListener();
 
-    this._personApiService.getAll().subscribe(result => {
-      this.dataSource = result;
-    });
+    this._peopleFacade.allPeople$.subscribe(x => this.dataSource = x);
   }
 }

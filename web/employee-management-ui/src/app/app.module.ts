@@ -16,6 +16,7 @@ import { MatListModule } from "@angular/material/list";
 import { MatChipsModule } from "@angular/material/chips";
 import { ConfirmationDialogComponent } from './dialogs/confirmation-dialog/confirmation-dialog.component';
 import { MatDialogModule } from "@angular/material/dialog";
+import { StoreModule } from '@ngrx/store';
 
 @NgModule({
   imports: [
@@ -46,6 +47,7 @@ import { MatDialogModule } from "@angular/material/dialog";
     MatListModule,
     MatChipsModule,
     MatDialogModule,
+    StoreModule.forRoot({}, {}),
   ],
   declarations: [
     AppComponent,

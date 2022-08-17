@@ -10,6 +10,7 @@ import { MatDialogModule } from "@angular/material/dialog";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { FormsModule } from "@angular/forms";
+import { PeopleFacade } from "./state/people.facade";
 
 @NgModule({
   declarations: [
@@ -26,7 +27,11 @@ import { FormsModule } from "@angular/forms";
     MatFormFieldModule,
     MatInputModule,
     FormsModule
-  ]
+  ],
+  providers: [PeopleFacade]
 })
 export class PeopleModule {
+  constructor(private _facade: PeopleFacade) {
+    this._facade.getPeople();
+  }
 }

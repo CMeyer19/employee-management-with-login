@@ -6,7 +6,7 @@ table {
 #add-person {
   $position: 2rem;
 
-  position: absolute;
+  position: fixed;
   bottom: $position;
   right: $position;
 }
