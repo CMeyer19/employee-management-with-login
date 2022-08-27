@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ResourceServer.Model;
+namespace EmployeeManager.Service.Model;
 
 public class Person
 {

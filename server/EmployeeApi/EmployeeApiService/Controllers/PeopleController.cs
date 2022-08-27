@@ -1,9 +1,9 @@
-using ResourceServer.Model;
 using ResourceServer.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using EmployeeManager.Service.Model;
 
 namespace ResourceServer.Controllers;
 

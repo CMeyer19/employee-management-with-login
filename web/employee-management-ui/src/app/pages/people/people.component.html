@@ -23,6 +23,7 @@
   <mat-row
     *matRowDef="let row; columns: columnKeys;"
     (click)="editPerson($event, row)"
+    class="cursor-pointer"
   ></mat-row>
 </mat-table>
 

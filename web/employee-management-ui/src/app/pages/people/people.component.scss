@@ -14,3 +14,14 @@ table {
 .mat-column-controls {
   max-width: 100px;
 }
+
+.mat-row {
+
+  & > .mat-column-controls > * {
+    display: none;
+  }
+
+  &:hover > .mat-column-controls > * {
+    display: block;
+  }
+}

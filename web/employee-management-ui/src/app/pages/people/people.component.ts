@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { KeyValue } from "@angular/common";
 import { PersonInterface } from "../../abstractions/models/person.model";
 import { MatDialog } from "@angular/material/dialog";
 import { AddPersonComponent } from "./dialogs/add-person/add-person.component";
 import { PersonApiService } from "../../services/person-api.service";
-import { EMPTY, map, Observable, of, switchMap, take } from "rxjs";
+import { EMPTY, map, of, switchMap, take } from "rxjs";
 import { ConfirmationDialogComponent } from "../../dialogs/confirmation-dialog/confirmation-dialog.component";
 import { SignalRService } from "../../services/signal-r.service";
 import { PeopleFacade } from "./state/people.facade";
@@ -12,7 +12,8 @@ import { PeopleFacade } from "./state/people.facade";
 @Component({
   selector: 'app-people',
   templateUrl: './people.component.html',
-  styleUrls: ['./people.component.scss']
+  styleUrls: ['./people.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PeopleComponent implements OnInit {
   public readonly columnKeys: Array<keyof PersonInterface | 'controls'> = ['firstName', 'lastName', 'controls'];

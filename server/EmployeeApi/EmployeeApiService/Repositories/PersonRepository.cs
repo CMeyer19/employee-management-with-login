@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using MassTransit;
 using System.Threading.Tasks;
 using SharedAbstractions;
+using EmployeeManager.Service.Model;
 
 namespace ResourceServer.Repositories;
 
