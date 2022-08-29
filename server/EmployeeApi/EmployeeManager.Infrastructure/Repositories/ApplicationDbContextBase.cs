@@ -1,23 +1,24 @@
+﻿using EmployeeManager.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Reflection;
 
-namespace ResourceServer.Model;
+namespace EmployeeManager.Infrastructure.Repositories;
 
-public class PersonContext : DbContext
+public class ApplicationDbContextBase : DbContext
 {
     protected readonly IConfiguration _configuration;
 
-    public DbSet<Person> People => Set<Person>();
+    public DbSet<Person> People { get; set; } = null!;
 
-    public PersonContext(
-        DbContextOptions<PersonContext> options,
+    public ApplicationDbContextBase(
+        DbContextOptions<ApplicationDbContextBase> contextOptions,
         IConfiguration configuration
-    ) : base(options)
+    ) : base(contextOptions)
     {
         _configuration = configuration;
     }
-
+    
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     {
         var connectionString = _configuration.GetConnectionString("DefaultConnection");

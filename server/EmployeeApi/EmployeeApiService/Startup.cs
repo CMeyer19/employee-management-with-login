@@ -1,5 +1,3 @@
-using ResourceServer.Model;
-using ResourceServer.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,6 +6,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using OpenIddict.Validation.AspNetCore;
 using MassTransit;
+using EmployeeManager.Infrastructure.Repositories;
+using EmployeeManager.Domain.Repositories;
+using EmployeeManager.Domain.Interfaces;
+using EmployeeManager.Infrastructure.Blah;
+using EmployeeManager.Infrastructure.Services;
 
 namespace ResourceServer;
 
@@ -24,7 +27,10 @@ public class Startup
     {
         var connection = Configuration.GetConnectionString("DefaultConnection");
 
-        services.AddDbContext<PersonContext>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
+        services.AddScoped<PersonService>();
+        services.AddDbContext<ApplicationDbContextBase>();
 
         services.AddCors(options =>
         {
@@ -125,7 +131,7 @@ public class Startup
             .AddControllers()
             .AddNewtonsoftJson();
 
-        services.AddScoped<PeopleRepository>();
+        services.AddScoped<ApplicationDbContextBase>();
     }
 
     public void Configure(IApplicationBuilder app)

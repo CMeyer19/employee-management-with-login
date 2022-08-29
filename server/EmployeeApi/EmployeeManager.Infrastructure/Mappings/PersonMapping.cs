@@ -8,8 +8,6 @@ namespace EmployeeManager.Infrastructure.Mappings
     {
         public void Configure(EntityTypeBuilder<Person> builder)
         {
-            builder.Metadata.SetSchema(nameof(Person));
-
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.FirstName)
