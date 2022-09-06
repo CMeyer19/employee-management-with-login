@@ -1,10 +1,6 @@
-using EmployeeManager.Infrastructure.Repositories;
+using EmployeeManager.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
-using EmployeeManager.Service.Model;
-using EmployeeManager.Infrastructure.Services;
 
 namespace ResourceServer.Controllers;
 

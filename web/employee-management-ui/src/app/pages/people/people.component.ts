@@ -1,13 +1,11 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { KeyValue } from "@angular/common";
-import { PersonInterface } from "../../abstractions/models/person.model";
+import { IPerson } from "../../abstractions/models/person.model";
 import { MatDialog } from "@angular/material/dialog";
-import { AddPersonComponent } from "./dialogs/add-person/add-person.component";
-import { PersonApiService } from "../../services/person-api.service";
-import { EMPTY, map, of, switchMap, take } from "rxjs";
+import { UpsertPersonComponent } from "./dialogs/upsert-person/upsert-person.component";
+import { Observable, take } from "rxjs";
 import { ConfirmationDialogComponent } from "../../dialogs/confirmation-dialog/confirmation-dialog.component";
-import { SignalRService } from "../../services/signal-r.service";
-import { PeopleFacade } from "./state/people.facade";
+import { PeopleService } from "./people.service";
 
 @Component({
   selector: 'app-people',
@@ -15,9 +13,9 @@ import { PeopleFacade } from "./state/people.facade";
   styleUrls: ['./people.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PeopleComponent implements OnInit {
-  public readonly columnKeys: Array<keyof PersonInterface | 'controls'> = ['firstName', 'lastName', 'controls'];
-  public readonly columns: Array<KeyValue<keyof PersonInterface, string>> = [
+export class PeopleComponent {
+  public readonly columnKeys: Array<keyof IPerson | 'controls'> = ['firstName', 'lastName', 'controls'];
+  public readonly columns: Array<KeyValue<keyof IPerson, string>> = [
     {
       key: 'firstName',
       value: 'First Name'
@@ -28,56 +26,40 @@ export class PeopleComponent implements OnInit {
     }
   ];
 
-  public dataSource: Array<PersonInterface> = [];
+  public allPeople$: Observable<Array<IPerson>> = this._peopleService.allPeople$;
 
   constructor(
     private _dialog: MatDialog,
-    private _personApiService: PersonApiService,
-    private _peopleFacade: PeopleFacade,
-    private _signalRService: SignalRService
+    private _peopleService: PeopleService
   ) {
   }
 
   public addPerson(): void {
     const dialogRef = this._dialog.open(
-      AddPersonComponent,
+      UpsertPersonComponent,
       { width: '250px' }
     );
 
-    dialogRef.afterClosed().pipe(
-      switchMap((newPerson: Omit<PersonInterface, 'id'>) => !!newPerson
-        ? this._personApiService.add(newPerson).pipe(
-          switchMap(newPersonId => of({
-            ...newPerson,
-            id: newPersonId
-          }))
-        )
-        : EMPTY
-      )
-    ).subscribe(newPerson => this.dataSource = this.dataSource.concat(newPerson));
+    dialogRef.afterClosed().pipe(take(1)).subscribe(person => {
+      if (!person) return;
+
+      this._peopleService.addPerson(person);
+    });
   }
 
-  public editPerson(event: any, person: PersonInterface): void {
+  public editPerson(event: any, person: IPerson): void {
     const dialogRef = this._dialog.open(
-      AddPersonComponent,
+      UpsertPersonComponent,
       {
         width: '250px',
         data: person
       },
     );
 
-    dialogRef.afterClosed().pipe(
-      switchMap((updatedPerson: PersonInterface) => !!updatedPerson
-        ? this._personApiService.update(person.id, updatedPerson).pipe(map(() => updatedPerson))
-        : EMPTY
-      )
-    ).subscribe(updatedPerson => {
-      const array: Array<PersonInterface> = [...this.dataSource];
-      const index: number = array.findIndex(x => x.id === person.id);
-      if (index === -1) return;
+    dialogRef.afterClosed().pipe(take(1)).subscribe(updatedPerson => {
+      if (!updatedPerson) return;
 
-      array.splice(index, 1, updatedPerson);
-      this.dataSource = array;
+      this._peopleService.updatePerson(person);
     });
   }
 
@@ -98,16 +80,7 @@ export class PeopleComponent implements OnInit {
     dialogRef.afterClosed().pipe(take(1)).subscribe(confirmed => {
       if (!confirmed) return;
 
-      this._personApiService.delete(id).subscribe(() => {
-        this.dataSource = this.dataSource.filter(x => x.id !== id);
-      });
+      this._peopleService.deletePerson(id);
     });
-  }
-
-  public ngOnInit(): void {
-    this._signalRService.startConnection();
-    this._signalRService.addTransferChartDataListener();
-
-    this._peopleFacade.allPeople$.subscribe(x => this.dataSource = x);
   }
 }

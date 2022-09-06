@@ -1,0 +1,36 @@
+<h1 mat-dialog-title>{{isEdit ? 'Update' : 'Add'}} Person</h1>
+
+<form [formGroup]="personForm" mat-dialog-content>
+  <mat-form-field appearance="fill">
+    <mat-label>First Name</mat-label>
+
+    <input formControlName="firstName" matInput>
+
+    <mat-error *ngIf="personForm.get('firstName')?.errors">
+      This field is required
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Last Name</mat-label>
+
+    <input matInput formControlName="lastName">
+
+    <mat-error *ngIf="personForm.get('lastName')?.errors">
+      This field is required
+    </mat-error>
+  </mat-form-field>
+</form>
+
+<div class="flex justify-between" mat-dialog-actions>
+  <button mat-button (click)="cancel()">Cancel</button>
+
+  <button
+    (click)="submit()"
+    [disabled]="personForm.invalid"
+    mat-button
+    cdkFocusInitial
+  >
+    Submit
+  </button>
+</div>

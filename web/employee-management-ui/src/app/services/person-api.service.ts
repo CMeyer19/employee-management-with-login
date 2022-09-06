@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { OidcSecurityService } from "angular-auth-oidc-client";
-import { PersonInterface } from "../abstractions/models/person.model";
+import { IPerson } from "../abstractions/models/person.model";
 import { environment } from "@env";
 
 @Injectable({ providedIn: 'root' })
@@ -30,25 +30,25 @@ export class PersonApiService {
     });
   }
 
-  public getAll(): Observable<Array<PersonInterface>> {
+  public getAll(): Observable<Array<IPerson>> {
     this.setHeaders();
 
-    return this._http.get<Array<PersonInterface>>(
+    return this._http.get<Array<IPerson>>(
       this._peopleApiUrl,
       { headers: this.headers }
     );
   }
 
-  public getById(id: string): Observable<PersonInterface> {
+  public getById(id: string): Observable<IPerson> {
     this.setHeaders();
 
-    return this._http.get<PersonInterface>(
+    return this._http.get<IPerson>(
       `${this._peopleApiUrl}/${id}`,
       { headers: this.headers }
     );
   }
 
-  public add(itemToAdd: Omit<PersonInterface, 'id'>): Observable<string> {
+  public add(itemToAdd: Omit<IPerson, 'id'>): Observable<string> {
     this.setHeaders();
 
     return this._http.post<string>(
@@ -58,20 +58,20 @@ export class PersonApiService {
     );
   }
 
-  public update(id: string, itemToUpdate: any): Observable<any> {
+  public update(id: string, itemToUpdate: IPerson): Observable<void> {
     this.setHeaders();
 
-    return this._http.put<any>(
+    return this._http.put<void>(
       `${this._peopleApiUrl}/${id}`,
       JSON.stringify(itemToUpdate),
       { headers: this.headers }
     );
   }
 
-  public delete(id: string): Observable<any> {
+  public delete(id: string): Observable<void> {
     this.setHeaders();
 
-    return this._http.delete<any>(
+    return this._http.delete<void>(
       `${this._peopleApiUrl}/${id}`,
       { headers: this.headers }
     );
