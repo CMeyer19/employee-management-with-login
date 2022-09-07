@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { KeyValue } from "@angular/common";
 import { IPerson } from "../../abstractions/models/person.model";
-import { MatDialog } from "@angular/material/dialog";
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { UpsertPersonComponent } from "./dialogs/upsert-person/upsert-person.component";
 import { Observable, take } from "rxjs";
 import { ConfirmationDialogComponent } from "../../dialogs/confirmation-dialog/confirmation-dialog.component";
@@ -14,6 +14,11 @@ import { PeopleService } from "./people.service";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PeopleComponent {
+  private readonly _modalConfig: MatDialogConfig = {
+    width: '250px',
+    height: '350px'
+  };
+
   public readonly columnKeys: Array<keyof IPerson | 'controls'> = ['firstName', 'lastName', 'controls'];
   public readonly columns: Array<KeyValue<keyof IPerson, string>> = [
     {
@@ -37,7 +42,7 @@ export class PeopleComponent {
   public addPerson(): void {
     const dialogRef = this._dialog.open(
       UpsertPersonComponent,
-      { width: '250px' }
+      this._modalConfig
     );
 
     dialogRef.afterClosed().pipe(take(1)).subscribe(person => {
@@ -51,7 +56,7 @@ export class PeopleComponent {
     const dialogRef = this._dialog.open(
       UpsertPersonComponent,
       {
-        width: '250px',
+        ...this._modalConfig,
         data: person
       },
     );

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { IPerson } from "../../../../abstractions/models/person.model";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { FormControl, FormGroup, ValidatorFn, Validators } from "@angular/forms";
 
 @Component({
   selector: 'app-upsert-person',
@@ -10,6 +10,14 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UpsertPersonComponent {
+  public readonly minCharacterLength: number = 5;
+  public readonly maxCharacterLength: number = 50;
+  private readonly _baseValidators: ValidatorFn[] = [
+    Validators.required,
+    Validators.minLength(this.minCharacterLength),
+    Validators.maxLength(this.maxCharacterLength)
+  ];
+
   public person: IPerson = {
     id: '',
     firstName: '',
@@ -19,11 +27,11 @@ export class UpsertPersonComponent {
   public personForm = new FormGroup({
     firstName: new FormControl<string>('', {
       nonNullable: true,
-      validators: Validators.required
+      validators: this._baseValidators
     }),
     lastName: new FormControl<string>('', {
       nonNullable: true,
-      validators: Validators.required
+      validators: this._baseValidators
     }),
   });
 

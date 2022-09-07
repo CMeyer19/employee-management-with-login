@@ -1,13 +1,19 @@
 <h1 mat-dialog-title>{{isEdit ? 'Update' : 'Add'}} Person</h1>
 
-<form [formGroup]="personForm" mat-dialog-content>
+<form
+  [formGroup]="personForm"
+  mat-dialog-content
+>
   <mat-form-field appearance="fill">
     <mat-label>First Name</mat-label>
 
     <input formControlName="firstName" matInput>
 
-    <mat-error *ngIf="personForm.get('firstName')?.errors">
-      This field is required
+    <mat-error *ngIf="personForm.get('firstName')?.errors as errors">
+      <ng-container
+        [ngTemplateOutlet]="errorTemplate"
+        [ngTemplateOutletContext]="{$implicit: errors}"
+      ></ng-container>
     </mat-error>
   </mat-form-field>
 
@@ -16,10 +22,30 @@
 
     <input matInput formControlName="lastName">
 
-    <mat-error *ngIf="personForm.get('lastName')?.errors">
-      This field is required
+    <mat-error *ngIf="personForm.get('lastName')?.errors as errors">
+      <ng-container
+        [ngTemplateOutlet]="errorTemplate"
+        [ngTemplateOutletContext]="{$implicit: errors}"
+      ></ng-container>
     </mat-error>
   </mat-form-field>
+
+  <ng-template
+    #errorTemplate
+    let-errors
+  >
+    <ng-container *ngIf="errors.hasOwnProperty('required')">
+      This field is required
+    </ng-container>
+
+    <ng-container *ngIf="errors.hasOwnProperty('minlength')">
+      This field has a minimum character length of {{minCharacterLength}}
+    </ng-container>
+
+    <ng-container *ngIf="errors.hasOwnProperty('maxlength')">
+      This field has a maximum character length of {{maxCharacterLength}}
+    </ng-container>
+  </ng-template>
 </form>
 
 <div class="flex justify-between" mat-dialog-actions>
