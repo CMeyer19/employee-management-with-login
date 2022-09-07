@@ -1,7 +1,7 @@
 <ng-container *ngIf="allPeople$ | async as allPeople">
   <mat-table [dataSource]="allPeople">
     <ng-container
-      *ngFor="let column of columns"
+      *ngFor="let column of columns; trackBy: trackByFn"
       [matColumnDef]="column.key"
     >
       <mat-header-cell *matHeaderCellDef>{{column.value}}</mat-header-cell>

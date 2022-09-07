@@ -33,6 +33,8 @@ export class PeopleComponent {
 
   public allPeople$: Observable<Array<IPerson>> = this._peopleService.allPeople$;
 
+  public trackByFn = (index: number): number => index;
+
   constructor(
     private _dialog: MatDialog,
     private _peopleService: PeopleService

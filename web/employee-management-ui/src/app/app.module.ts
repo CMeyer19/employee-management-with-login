@@ -17,9 +17,8 @@ import { MatChipsModule } from "@angular/material/chips";
 import { ConfirmationDialogComponent } from './dialogs/confirmation-dialog/confirmation-dialog.component';
 import { MatDialogModule } from "@angular/material/dialog";
 import { StoreModule } from '@ngrx/store';
-import { reducer } from "./pages/people/state/people.reducer";
-import { FEATURE_NAME } from "./pages/people/people.constants";
 import { EffectsModule } from "@ngrx/effects";
+import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 
 @NgModule({
   imports: [
@@ -56,7 +55,8 @@ import { EffectsModule } from "@ngrx/effects";
   declarations: [
     AppComponent,
     HomeComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    PageNotFoundComponent
   ],
   bootstrap: [AppComponent],
 })
