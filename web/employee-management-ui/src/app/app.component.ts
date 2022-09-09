@@ -1,6 +1,6 @@
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { ReplaySubject, take, takeUntil } from 'rxjs';
+import { Subject, take, takeUntil } from 'rxjs';
 import { PersonApiService } from "./services/person-api.service";
 import { SignalRService } from "./services/signal-r.service";
 
@@ -18,7 +18,7 @@ interface RouteInterface {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent implements OnInit, OnDestroy {
-  private readonly _destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
+  private readonly _destroy$: Subject<void> = new Subject<void>();
 
   public readonly routes: Array<RouteInterface> = [
     {
@@ -56,7 +56,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this._oidcSecurityService.checkAuth().pipe(takeUntil(this._destroyed$)).subscribe(({ isAuthenticated }) => {
+    this._oidcSecurityService.checkAuth().pipe(takeUntil(this._destroy$)).subscribe(({ isAuthenticated }) => {
       if (!isAuthenticated) {
         this.login();
         return;
@@ -72,7 +72,7 @@ export class AppComponent implements OnInit, OnDestroy {
   public ngOnDestroy(): void {
     this._signalRService.stopConnection();
 
-    this._destroyed$.next(true);
-    this._destroyed$.complete();
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 }
