@@ -46,7 +46,7 @@
   <mat-drawer #drawer class="example-sidenav" mode="side">
     <mat-list>
       <mat-list-item
-        *ngFor="let route of routes; trackBy: trackByFn"
+        *ngFor="let route of routes; trackBy: routeTrackByFn"
         [routerLink]="route.route"
         [routerLinkActiveOptions]="{exact: route.exact}"
         routerLinkActive="active"

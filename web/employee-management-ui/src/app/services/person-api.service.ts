@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Observable } from "rxjs";
+import { Observable, take } from "rxjs";
 import { OidcSecurityService } from "angular-auth-oidc-client";
 import { IPerson } from "../abstractions/models/person.model";
 import { environment } from "@env";
@@ -18,14 +18,15 @@ export class PersonApiService {
   }
 
   private setHeaders(): void {
+    // I think this functionality needs to be moved to an HTTP interceptor.
     this.headers = new HttpHeaders();
     this.headers = this.headers.set('Content-Type', 'application/json');
     this.headers = this.headers.set('Accept', 'application/json');
 
-    this._oidcSecurityService.getAccessToken().subscribe(token => {
+    this._oidcSecurityService.getAccessToken().pipe(take(1)).subscribe(token => {
       if (token === '') return;
 
-      const tokenValue = 'Bearer ' + token;
+      const tokenValue: string = `Bearer ${token}`;
       this.headers = this.headers.append('Authorization', tokenValue);
     });
   }

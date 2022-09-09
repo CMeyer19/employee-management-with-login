@@ -7,6 +7,8 @@ import { Observable, take } from "rxjs";
 import { ConfirmationDialogComponent } from "../../dialogs/confirmation-dialog/confirmation-dialog.component";
 import { PeopleService } from "./people.service";
 
+type ColumnType = KeyValue<keyof IPerson, string>;
+
 @Component({
   selector: 'app-people',
   templateUrl: './people.component.html',
@@ -20,7 +22,7 @@ export class PeopleComponent {
   };
 
   public readonly columnKeys: Array<keyof IPerson | 'controls'> = ['firstName', 'lastName', 'controls'];
-  public readonly columns: Array<KeyValue<keyof IPerson, string>> = [
+  public readonly columns: Array<ColumnType> = [
     {
       key: 'firstName',
       value: 'First Name'
@@ -33,7 +35,7 @@ export class PeopleComponent {
 
   public allPeople$: Observable<Array<IPerson>> = this._peopleService.allPeople$;
 
-  public trackByFn = (index: number): number => index;
+  public columnTrackByFn = (index: number, column: ColumnType): string => column.key;
 
   constructor(
     private _dialog: MatDialog,

@@ -37,7 +37,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   public isAuthenticated = false;
 
-  public trackByFn = (index: number): number => index;
+  public routeTrackByFn = (index: number, navigationItem: RouteInterface): string => navigationItem.route;
 
   constructor(
     private _cd: ChangeDetectorRef,
