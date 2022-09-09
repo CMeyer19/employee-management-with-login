@@ -18,7 +18,7 @@ export class PersonApiService {
   }
 
   private setHeaders(): void {
-    // I think this functionality needs to be moved to an HTTP interceptor.
+    // TODO: I think this functionality needs to be moved to an HTTP interceptor.
     this.headers = new HttpHeaders();
     this.headers = this.headers.set('Content-Type', 'application/json');
     this.headers = this.headers.set('Accept', 'application/json');
