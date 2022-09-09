@@ -11,7 +11,7 @@ import {
   updatePersonSuccess
 } from './people.actions';
 import { createEntityAdapter, EntityAdapter, EntityState } from "@ngrx/entity";
-import { IPerson } from "../../../abstractions/models/person.model";
+import { IPerson } from "@apis/person/abstractions/models/person.model";
 import { FEATURE_NAME } from "../people.constants";
 
 export interface PeopleState extends EntityState<IPerson> {

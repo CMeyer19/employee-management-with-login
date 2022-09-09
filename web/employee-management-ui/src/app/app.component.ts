@@ -1,8 +1,8 @@
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject, take, takeUntil } from 'rxjs';
-import { PersonApiService } from "./services/person-api.service";
-import { SignalRService } from "./services/signal-r.service";
+import { PersonApiService } from "@apis/person/person-api.service";
+import { SignalRService } from "@services/signal-r.service";
 
 interface RouteInterface {
   route: string;

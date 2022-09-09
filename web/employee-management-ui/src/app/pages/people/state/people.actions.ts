@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { IPerson } from "../../../abstractions/models/person.model";
+import { IPerson } from "@apis/person/abstractions/models/person.model";
 
 export const getPeople = createAction(
   '[People] Get People'

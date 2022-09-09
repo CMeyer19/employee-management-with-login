@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { PersonApiService } from "../../services/person-api.service";
+import { IPerson, PersonApiService } from "@apis/person";
 import { PeopleFacade } from "./state";
 import { Observable } from "rxjs";
-import { IPerson } from "../../abstractions/models/person.model";
 
 @Injectable()
 export class PeopleService {

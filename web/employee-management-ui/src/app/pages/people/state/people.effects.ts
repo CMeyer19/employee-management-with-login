@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, of, switchMap } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { PersonApiService } from "../../../services/person-api.service";
+import { PersonApiService } from "@apis/person/person-api.service";
 import {
   addPerson,
   addPersonFailure,

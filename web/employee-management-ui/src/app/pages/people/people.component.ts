@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { KeyValue } from "@angular/common";
-import { IPerson } from "../../abstractions/models/person.model";
+import { IPerson } from "@apis/person/abstractions/models/person.model";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { UpsertPersonComponent } from "./dialogs/upsert-person/upsert-person.component";
 import { Observable, take } from "rxjs";
