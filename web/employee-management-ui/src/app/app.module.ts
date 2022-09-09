@@ -3,9 +3,9 @@ import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { routing } from './app.routes';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { HomeComponent } from './pages/home/home.component';
-import { AuthModule, LogLevel } from 'angular-auth-oidc-client';
+import { AuthModule, LogLevel, OidcSecurityService } from 'angular-auth-oidc-client';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatButtonModule } from "@angular/material/button";
@@ -19,6 +19,7 @@ import { MatDialogModule } from "@angular/material/dialog";
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from "@ngrx/effects";
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
+import { HttpInterceptorService } from "./services/http-interceptor.service";
 
 @NgModule({
   imports: [
@@ -59,6 +60,14 @@ import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.com
     PageNotFoundComponent
   ],
   bootstrap: [AppComponent],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpInterceptorService,
+      deps: [OidcSecurityService],
+      multi: true
+    }
+  ]
 })
 
 export class AppModule {
