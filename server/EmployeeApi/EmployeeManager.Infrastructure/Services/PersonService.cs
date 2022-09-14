@@ -15,8 +15,32 @@ public class PersonService
         _unit = unit;
     }
 
-    public List<Person> GetPeople()
+    public Task<List<Person>> GetAllAsync(CancellationToken cancellationToken)
     {
-        return _personRepository.GetAll();
+        return _personRepository.GetAllAsync(cancellationToken);
+    }
+
+    public Task<Person> GetAsync(Guid id, CancellationToken cancellationToken)
+    {
+        return _personRepository.GetAsync(id, cancellationToken);
+    }
+
+    public async Task<Guid> AddAsync(Person person, CancellationToken cancellationToken)
+    {
+        var newId = await _personRepository.AddAsync(person, cancellationToken);
+        await _unit.SaveChangesAsync(cancellationToken);
+        return newId;
+    }
+
+    public async Task UpdateAsync(Person person, CancellationToken cancellationToken)
+    {
+        _personRepository.Update(person);
+        await _unit.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
+    {
+        await _personRepository.DeleteAsync(id, cancellationToken);
+        await _unit.SaveChangesAsync(cancellationToken);
     }
 }

@@ -11,6 +11,7 @@ using EmployeeManager.Domain.Repositories;
 using EmployeeManager.Domain.Interfaces;
 using EmployeeManager.Infrastructure.Blah;
 using EmployeeManager.Infrastructure.Services;
+using Newtonsoft.Json.Serialization;
 
 namespace ResourceServer;
 
@@ -129,7 +130,10 @@ public class Startup
 
         services
             .AddControllers()
-            .AddNewtonsoftJson();
+            .AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            });
 
         services.AddScoped<ApplicationDbContextBase>();
     }

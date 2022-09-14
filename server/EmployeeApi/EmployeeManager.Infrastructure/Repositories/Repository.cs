@@ -16,35 +16,35 @@ public class Repository<TEntity, TId> : IRepository<TEntity, TId> where TEntity 
         _context = context;
     }
 
-    public List<TEntity> GetAll()
+    public Task<List<TEntity>> GetAllAsync(CancellationToken cancellationToken)
     {
-        var data = _collection.ToList();
-
-        return data;
+        return _collection.ToListAsync(cancellationToken);
     }
 
-    public TEntity Get(TId id)
+    public async Task<TEntity> GetAsync(TId id, CancellationToken cancellationToken)
     {
-        var person = _collection.First(t => t.Id.Equals(id));
+        var person = await _collection.FirstOrDefaultAsync(t => t.Id.Equals(id));
         if (person is null) throw new Exception("A person with this identifier could not be found");
 
         return person;
     }
 
-    public TId Add(TEntity person)
+    public async Task<TId> AddAsync(TEntity person, CancellationToken cancellationToken)
     {
-        _collection.Add(person);
+        await _collection.AddAsync(person, cancellationToken);
         return person.Id;
     }
 
-    public void Update(TId id, TEntity person)
+    public void Update(TEntity person)
     {
         _collection.Update(person);
     }
 
-    public void Delete(TId id)
+    public async Task DeleteAsync(TId id, CancellationToken cancellationToken)
     {
-        var entity = _collection.First(t => t.Id.Equals(id));
-        _collection.Remove(entity);
+        var entity = await _collection.FirstOrDefaultAsync(t => t.Id.Equals(id));
+        if (entity is null) throw new Exception("A person with this identifier could not be found");
+
+        _collection.Remove(entity); 
     }
 }

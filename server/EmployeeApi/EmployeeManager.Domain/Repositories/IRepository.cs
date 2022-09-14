@@ -4,13 +4,13 @@ namespace EmployeeManager.Domain.Repositories;
 
 public interface IRepository<TEntity, TIdentifier> where TEntity : IEntity<TIdentifier>
 {
-    List<TEntity> GetAll();
+    Task<List<TEntity>> GetAllAsync(CancellationToken cancellationToken);
 
-    TEntity Get(TIdentifier id);
+    Task<TEntity> GetAsync(TIdentifier id, CancellationToken cancellationToken);
 
-    TIdentifier Add(TEntity person);
+    Task<TIdentifier> AddAsync(TEntity person, CancellationToken cancellationToken);
 
-    void Update(TIdentifier id, TEntity person);
+    void Update(TEntity person);
 
-    void Delete(TIdentifier id);
+    Task DeleteAsync(TIdentifier id, CancellationToken cancellationToken);
 }
