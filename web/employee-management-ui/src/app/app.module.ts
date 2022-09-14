@@ -19,7 +19,7 @@ import { MatDialogModule } from "@angular/material/dialog";
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from "@ngrx/effects";
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
-import { HttpInterceptorService } from "./services/http-interceptor.service";
+import { HttpInterceptorService } from "@services/http-interceptor.service";
 
 @NgModule({
   imports: [
