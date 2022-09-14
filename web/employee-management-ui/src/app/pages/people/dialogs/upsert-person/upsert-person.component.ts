@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import { IPerson } from "../../../../abstractions/models/person.model";
+import { IPerson } from "@apis/person/abstractions/models/person.model";
 import { FormControl, FormGroup, ValidatorFn, Validators } from "@angular/forms";
 
 @Component({

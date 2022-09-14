@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store } from "@ngrx/store";
 import { addPerson, deletePerson, getPeople, updatePerson } from "./people.actions";
 import { selectPeople } from "./people.selectors";
-import { IPerson } from "../../../abstractions/models/person.model";
+import { IPerson } from "@apis/person/abstractions/models/person.model";
 
 @Injectable()
 export class PeopleFacade {

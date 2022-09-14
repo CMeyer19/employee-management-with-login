@@ -1,11 +1,13 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { KeyValue } from "@angular/common";
-import { IPerson } from "../../abstractions/models/person.model";
+import { IPerson } from "@apis/person/abstractions/models/person.model";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { UpsertPersonComponent } from "./dialogs/upsert-person/upsert-person.component";
 import { Observable, take } from "rxjs";
 import { ConfirmationDialogComponent } from "../../dialogs/confirmation-dialog/confirmation-dialog.component";
 import { PeopleService } from "./people.service";
+
+type ColumnType = KeyValue<keyof IPerson, string>;
 
 @Component({
   selector: 'app-people',
@@ -20,7 +22,7 @@ export class PeopleComponent {
   };
 
   public readonly columnKeys: Array<keyof IPerson | 'controls'> = ['firstName', 'lastName', 'controls'];
-  public readonly columns: Array<KeyValue<keyof IPerson, string>> = [
+  public readonly columns: Array<ColumnType> = [
     {
       key: 'firstName',
       value: 'First Name'
@@ -32,6 +34,8 @@ export class PeopleComponent {
   ];
 
   public allPeople$: Observable<Array<IPerson>> = this._peopleService.allPeople$;
+
+  public columnTrackByFn = (index: number, column: ColumnType): string => column.key;
 
   constructor(
     private _dialog: MatDialog,

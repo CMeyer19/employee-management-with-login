@@ -23,7 +23,9 @@
       "dom"
     ],
     "paths": {
-      "@env": ["src/environments/environment.ts"]
+      "@env": ["src/environments/environment.ts"],
+      "@services/*": ["src/app/services/*"],
+      "@apis/*": ["src/app/apis/*"],
     }
   },
   "angularCompilerOptions": {
