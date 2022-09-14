@@ -4,15 +4,17 @@ import { environment } from "@env";
 import { Observable, Subject } from "rxjs";
 import { LoggerService } from "./logger.service";
 
+type ReceivedMessageType = string;
+
 @Injectable({ providedIn: 'root' })
 export class SignalRService {
-  private readonly _receivedMessages$: Subject<any> = new Subject<any>();
+  private readonly _receivedMessages$: Subject<ReceivedMessageType> = new Subject();
   private readonly _signalRApiUrl: string = environment.routes.signalR;
   private readonly _hubConnection: HubConnection = new HubConnectionBuilder()
     .withUrl(`${this._signalRApiUrl}/chatHub`)
     .build();
 
-  public readonly receivedMessages$: Observable<any> = this._receivedMessages$.asObservable();
+  public readonly receivedMessages$: Observable<ReceivedMessageType> = this._receivedMessages$.asObservable();
 
   constructor(private _logger: LoggerService) {
   }
