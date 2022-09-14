@@ -1,7 +1,6 @@
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject, take, takeUntil } from 'rxjs';
-import { PersonApiService } from "@apis/person/person-api.service";
 import { SignalRService } from "@services/signal-r.service";
 
 interface RouteInterface {
@@ -43,7 +42,6 @@ export class AppComponent implements OnInit, OnDestroy {
     private _cd: ChangeDetectorRef,
     private _oidcSecurityService: OidcSecurityService,
     private _signalRService: SignalRService,
-    private _personApiService: PersonApiService
   ) {
   }
 
